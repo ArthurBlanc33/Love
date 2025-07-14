@@ -13,6 +13,8 @@ body {
   height: 100vh;
   padding: 20px;
   text-align: center;
+  overflow: hidden;
+  touch-action: none;
 }
 
 .container {
