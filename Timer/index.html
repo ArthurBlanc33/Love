@@ -6,6 +6,7 @@
         <title>Compteur de temps</title>
         <link rel="stylesheet" href="style.css" />
         <link rel="icon" type="image/x-icon" href="hearth.ico" />
+        <link rel="manifest" href="manifest.json" />
     </head>
     <body>
     
@@ -110,5 +111,10 @@ window.addEventListener('resize', resizeCanvas);
 
 
   </script>
-    </body>
+  <script>
+  if ("serviceWorker" in navigator) {
+    navigator.serviceWorker.register("sw.js");
+  }
+</script>
+</body>
 </html>
