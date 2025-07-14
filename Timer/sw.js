@@ -2,7 +2,7 @@ const CACHE_NAME = "love-timer-cache-v1";
 const urlsToCache = [
   "index.html",
   "style.css",
-  "hearth.ico",
+  "hearthicone.png",
   "manifest.json"
 ];
 
