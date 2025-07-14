@@ -1,6 +1,6 @@
 {
-  "name": "Compteur de temps",
-  "short_name": "Compteur",
+  "name": "BackToLove",
+  "short_name": "BakcToLove",
   "start_url": ".",
   "display": "standalone",
   "background_color": "#ffe0ec",
@@ -8,9 +8,9 @@
   "description": "Un petit compteur mignon",
   "icons": [
     {
-      "src": "hearth.ico",
-      "sizes": "48x48 64x64 128x128 256x256",
-      "type": "image/x-icon"
+      "src": "hearthicone.png",
+      "sizes": "192x192",
+      "type": "image/png"
     }
   ]
 }
