@@ -5,8 +5,10 @@
         <meta name="viewport" content="width=device-width, initial-scale=1.0" />
         <title>Compteur de temps</title>
         <link rel="stylesheet" href="style.css" />
+        <link rel="icon" type="image/x-icon" href="hearth.ico" />
     </head>
     <body>
+    
         <div class="container">
             <h1>On se revoit dans</h1>
             <div id="timer">0 jours</div>
@@ -90,6 +92,23 @@ container.addEventListener("click", (e) => {
 
     updateTimer();
     setInterval(updateTimer, 60000); // mise à jour toutes les minutes
+
+    // --- Particules coeurs ---
+const canvas = document.getElementById('hearts-bg');
+const ctx = canvas.getContext('2d');
+let hearts = [];
+
+function resizeCanvas() {
+  canvas.width = window.innerWidth;
+  canvas.height = window.innerHeight;
+}
+resizeCanvas();
+window.addEventListener('resize', resizeCanvas);
+
+
+
+
+
   </script>
     </body>
 </html>
