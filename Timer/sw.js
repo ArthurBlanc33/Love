@@ -1,8 +1,9 @@
-const CACHE_NAME = "love-timer-cache-v1";
+const CACHE_NAME = "love-timer-cache-v2";
 const urlsToCache = [
   "index.html",
   "style.css",
-  "hearthicone.png",
+  "icon-192.png",
+  "icon-512.png",
   "manifest.json"
 ];
 
