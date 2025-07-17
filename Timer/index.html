@@ -523,37 +523,28 @@
             }
         }
 
-        // Gestionnaire du bouton
         addImageBtn.addEventListener('click', () => {
-            if (userImage.style.display === 'none') {
-                // Ajouter une image
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = async (e) => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    
-                    // Vérifier la taille du fichier (max 5MB)
-                    if (file.size > 5 * 1024 * 1024) {
-                        alert('L\'image est trop grande (max 5MB)');
-                        return;
-                    }
-                    
-                    try {
-                        await uploadImage(file);
-                    } catch (error) {
-                        console.error('Erreur upload:', error);
-                    }
-                };
-                input.click();
-            } else {
-                // Supprimer l'image
-                if (confirm('Voulez-vous vraiment supprimer cette image ?')) {
-                    deleteCurrentImage();
-                }
-            }
-        });
+    // Toujours proposer d'ajouter/changer une image
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'image/*';
+    input.onchange = async (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 5 * 1024 * 1024) {
+            alert('L\'image est trop grande (max 5MB)');
+            return;
+        }
+        try {
+            await uploadImage(file);
+        } catch (error) {
+            console.error('Erreur upload:', error);
+        }
+    };
+    input.click();
+});
+
+// Pour la suppression, ajoute un bouton séparé si tu veux garder cette fonctionnalité.
 
         // Initialiser
         updateSlideIndicator();
