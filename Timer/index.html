@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="fr">
-<head>
+  <head>
     <meta charset="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Compteur de temps</title>
-        
-        <link rel="icon" type="image/png" href="hearthicone.png" />
-        <link rel="manifest" href="manifest.json" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Compteur de temps</title>
+
+    <link rel="icon" type="image/png" href="hearthicone.png" />
+    <link rel="manifest" href="manifest.json" />
     <style>
         * {
             margin: 0;
@@ -98,6 +98,10 @@
             color: #ff1770;
             margin-bottom: 18px;
             text-shadow: 0 2px 8px #ffe0ec;
+            text-align: center;
+            max-width: 280px;
+            line-height: 1.1;
+            word-wrap: break-word;
         }
 
         .red-text {
@@ -125,6 +129,12 @@
             background: linear-gradient(90deg, #ffb86c 0%, #ff6fa1 100%);
             transform: translateY(-1px);
             box-shadow: 0 6px 20px rgba(255, 0, 80, 0.3);
+        }
+
+        #addImageBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+            transform: none;
         }
 
         #userImage {
@@ -173,43 +183,101 @@
             0%, 100% { opacity: 0.7; }
             50% { opacity: 0.3; }
         }
+
+        .loading {
+            color: #d72660;
+            font-size: 1rem;
+            margin-top: 10px;
+        }
+
+        .image-info {
+            position: absolute;
+            bottom: 10px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-size: 0.8rem;
+            color: #d72660;
+            opacity: 0.7;
+        }
     </style>
-</head>
-<body>
+  </head>
+  <body>
     <div class="slider-container">
-        <div class="slider-track" id="sliderTrack">
-            <!-- Première diapositive - Compteur -->
-            <div class="slide-item">
-                <div class="container" id="mainCircle">
-                    <h1>On se revoit dans</h1>
-                    <div id="timer">0 jours</div>
-                    <div id="loveWord" class="red-text">ma chérie</div>
-                </div>
-            </div>
-            
-            <!-- Deuxième diapositive - Image -->
-            <div class="slide-item">
-                <div class="container empty" id="emptyCircle">
-                    <img id="userImage" />
-                    <div style="color: #d72660; font-size: 1.2rem; text-align: center; margin-top: 10px;" id="imageText">
-                        Ajoutez votre photo
-                    </div>
-                </div>
-                <button id="addImageBtn">Ajouter une image</button>
-            </div>
+      <div class="slider-track" id="sliderTrack">
+        <!-- Première diapositive - Compteur -->
+        <div class="slide-item">
+          <div class="container" id="mainCircle">
+            <h1>On se revoit dans</h1>
+            <div id="timer">0 jours</div>
+            <div id="loveWord" class="red-text">ma chérie</div>
+          </div>
         </div>
-        
-        <!-- Indicateurs de slide -->
-        <div class="slide-indicator">
-            <div class="dot active" data-slide="0"></div>
-            <div class="dot" data-slide="1"></div>
+
+        <!-- Deuxième diapositive - Image -->
+        <div class="slide-item">
+          <div class="container empty" id="emptyCircle">
+            <img id="userImage" />
+            <div
+              style="color: #d72660; font-size: 1.2rem; text-align: center; margin-top: 10px;"
+              id="imageText">
+              Ajoutez votre photo
+            </div>
+            <div class="loading" id="loadingText"
+              style="display: none;">Chargement...</div>
+            <div class="image-info" id="imageInfo"></div>
+          </div>
+          <button id="addImageBtn">Ajouter une image</button>
         </div>
-        
-        <!-- Indication de swipe -->
-        <div class="swipe-hint">← Glissez pour voir plus →</div>
+      </div>
+
+      <!-- Indicateurs de slide -->
+      <div class="slide-indicator">
+        <div class="dot active" data-slide="0"></div>
+        <div class="dot" data-slide="1"></div>
+      </div>
+
+      <!-- Indication de swipe -->
+      <div class="swipe-hint">← Glissez pour voir plus →</div>
     </div>
 
+    <!-- Firebase SDK -->
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-app-compat.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-database-compat.min.js"></script>
+    <script
+      src="https://cdnjs.cloudflare.com/ajax/libs/firebase/9.23.0/firebase-storage-compat.min.js"></script>
+   
+   <script type="module">
+  // Import the functions you need from the SDKs you need
+  import { initializeApp } from "https://www.gstatic.com/firebasejs/11.10.0/firebase-app.js";
+  // TODO: Add SDKs for Firebase products that you want to use
+  // https://firebase.google.com/docs/web/setup#available-libraries
+
+  // Your web app's Firebase configuration
+  const firebaseConfig = {
+    apiKey: "AIzaSyBWGFwNMBXhgKcYDGt6LfwTF6ufZzc1ymQ",
+    authDomain: "backtolovevalide.firebaseapp.com",
+    databaseURL: "https://backtolovevalide-default-rtdb.firebaseio.com",
+    projectId: "backtolovevalide",
+    storageBucket: "backtolovevalide.firebasestorage.app",
+    messagingSenderId: "200368262159",
+    appId: "1:200368262159:web:55501c37ab8a607021677a"
+  };
+
+  // Initialize Firebase
+  const app = initializeApp(firebaseConfig);
+</script>
+
     <script>
+        // Configuration Firebase (REMPLACEZ PAR VOTRE CONFIG)
+        
+
+        // Initialiser Firebase
+        firebase.initializeApp(firebaseConfig);
+        const database = firebase.database();
+        const storage = firebase.storage();
+
         const loveWords = [
             "ma chérie", "ma princesse", "mon trésor", "mon cœur", "mon amour", 
             "mon ange", "ma douce", "mon soleil", "ma belle", "ma perle"
@@ -231,6 +299,7 @@
             
             if (diffMs <= 0) {
                 timerEl.textContent = "C'est aujourd'hui !";
+                timerEl.style.fontSize = "1.8rem";
                 return;
             }
             
@@ -240,25 +309,32 @@
             const remainingDays = diffDays % 7;
             
             let text;
+            let fontSize = "2.2rem";
+            
             switch (currentMode) {
                 case "days":
                     text = diffDays + " jours";
+                    fontSize = "2.2rem";
                     break;
                 case "hours":
                     text = diffHours + " heures";
+                    fontSize = "2.0rem";
                     break;
                 case "weeks":
                     if (remainingDays === 0) {
                         text = `${fullWeeks} semaines`;
+                        fontSize = "1.8rem";
                     } else {
                         text = `${fullWeeks} semaines et ${remainingDays} jour${remainingDays > 1 ? "s" : ""}`;
+                        fontSize = "1.4rem";
                     }
                     break;
             }
+            
             timerEl.textContent = text;
+            timerEl.style.fontSize = fontSize;
         }
 
-        // Changer le mode d'affichage en cliquant sur le conteneur
         container.addEventListener("click", (e) => {
             e.preventDefault();
             if (currentMode === "days") currentMode = "hours";
@@ -285,7 +361,6 @@
                 dot.classList.toggle('active', index === currentSlide);
             });
             
-            // Cacher l'indication de swipe après le premier slide
             if (currentSlide > 0) {
                 swipeHint.style.display = 'none';
             }
@@ -309,7 +384,6 @@
             const diff = clientX - startX;
             const newTranslate = currentTranslate + diff;
             
-            // Limiter le déplacement
             const maxTranslate = Math.max(-350, Math.min(0, newTranslate));
             sliderTrack.style.transform = `translateX(${maxTranslate}px)`;
         }
@@ -336,83 +410,158 @@
             startX = null;
         }
 
-        // Événements tactiles
-        sliderTrack.addEventListener('touchstart', (e) => {
-            handleDragStart(e.touches[0].clientX);
-        });
-
+        // Événements tactiles et souris
+        sliderTrack.addEventListener('touchstart', (e) => handleDragStart(e.touches[0].clientX));
         sliderTrack.addEventListener('touchmove', (e) => {
             e.preventDefault();
             handleDragMove(e.touches[0].clientX);
         });
+        sliderTrack.addEventListener('touchend', (e) => handleDragEnd(e.changedTouches[0].clientX));
+        sliderTrack.addEventListener('mousedown', (e) => handleDragStart(e.clientX));
+        window.addEventListener('mousemove', (e) => handleDragMove(e.clientX));
+        window.addEventListener('mouseup', (e) => handleDragEnd(e.clientX));
 
-        sliderTrack.addEventListener('touchend', (e) => {
-            handleDragEnd(e.changedTouches[0].clientX);
-        });
-
-        // Événements souris
-        sliderTrack.addEventListener('mousedown', (e) => {
-            handleDragStart(e.clientX);
-        });
-
-        window.addEventListener('mousemove', (e) => {
-            handleDragMove(e.clientX);
-        });
-
-        window.addEventListener('mouseup', (e) => {
-            handleDragEnd(e.clientX);
-        });
-
-        // Clic sur les indicateurs
         dots.forEach((dot, index) => {
             dot.addEventListener('click', () => goToSlide(index));
         });
 
-        // --- LOGIQUE D'AJOUT/SUPPRESSION D'IMAGE ---
+        // --- FIREBASE INTEGRATION ---
         const addImageBtn = document.getElementById('addImageBtn');
         const userImage = document.getElementById('userImage');
         const imageText = document.getElementById('imageText');
+        const loadingText = document.getElementById('loadingText');
+        const imageInfo = document.getElementById('imageInfo');
 
-        function updateImageUI() {
-            if (userImage.src && userImage.style.display !== 'none') {
-                addImageBtn.textContent = "Supprimer l'image";
-                imageText.textContent = "Votre photo";
+        // Écouter les changements en temps réel
+        database.ref('currentImage').on('value', (snapshot) => {
+            const data = snapshot.val();
+            if (data && data.url) {
+                userImage.src = data.url;
+                userImage.style.display = 'block';
+                imageText.textContent = 'Photo partagée';
+                imageInfo.textContent = `Ajoutée le ${new Date(data.timestamp).toLocaleDateString()}`;
+                addImageBtn.textContent = 'Changer l\'image';
             } else {
                 userImage.style.display = 'none';
                 userImage.src = '';
-                addImageBtn.textContent = "Ajouter une image";
-                imageText.textContent = "Ajoutez votre photo";
-            }
-        }
-
-        addImageBtn.addEventListener('click', () => {
-            if (userImage.style.display === 'none') {
-                const input = document.createElement('input');
-                input.type = 'file';
-                input.accept = 'image/*';
-                input.onchange = e => {
-                    const file = e.target.files[0];
-                    if (!file) return;
-                    
-                    const reader = new FileReader();
-                    reader.onload = function(evt) {
-                        userImage.src = evt.target.result;
-                        userImage.style.display = "block";
-                        updateImageUI();
-                    };
-                    reader.readAsDataURL(file);
-                };
-                input.click();
-            } else {
-                userImage.style.display = 'none';
-                userImage.src = '';
-                updateImageUI();
+                imageText.textContent = 'Ajoutez votre photo';
+                imageInfo.textContent = '';
+                addImageBtn.textContent = 'Ajouter une image';
             }
         });
 
-        // Initialiser l'UI
-        updateImageUI();
+        // Fonction pour uploader une image
+        async function uploadImage(file) {
+            try {
+                addImageBtn.disabled = true;
+                loadingText.style.display = 'block';
+                imageText.textContent = 'Upload en cours...';
+
+                // Créer un nom unique pour le fichier
+                const timestamp = Date.now();
+                const fileName = `images/${timestamp}_${file.name}`;
+                
+                // Upload vers Firebase Storage
+                const storageRef = storage.ref(fileName);
+                const uploadTask = storageRef.put(file);
+                
+                return new Promise((resolve, reject) => {
+                    uploadTask.on('state_changed', 
+                        (snapshot) => {
+                            // Progression de l'upload
+                            const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+                            imageText.textContent = `Upload: ${Math.round(progress)}%`;
+                        },
+                        (error) => {
+                            console.error('Erreur upload:', error);
+                            reject(error);
+                        },
+                        async () => {
+                            // Upload terminé
+                            const downloadURL = await uploadTask.snapshot.ref.getDownloadURL();
+                            
+                            // Sauvegarder dans l'historique
+                            await database.ref('imageHistory').push({
+                                url: downloadURL,
+                                fileName: fileName,
+                                timestamp: timestamp,
+                                originalName: file.name
+                            });
+                            
+                            // Mettre à jour l'image courante
+                            await database.ref('currentImage').set({
+                                url: downloadURL,
+                                fileName: fileName,
+                                timestamp: timestamp,
+                                originalName: file.name
+                            });
+                            
+                            resolve(downloadURL);
+                        }
+                    );
+                });
+            } catch (error) {
+                console.error('Erreur:', error);
+                alert('Erreur lors de l\'upload de l\'image');
+                throw error;
+            } finally {
+                addImageBtn.disabled = false;
+                loadingText.style.display = 'none';
+            }
+        }
+
+        // Fonction pour supprimer l'image courante
+        async function deleteCurrentImage() {
+            try {
+                addImageBtn.disabled = true;
+                loadingText.style.display = 'block';
+                imageText.textContent = 'Suppression...';
+
+                await database.ref('currentImage').remove();
+                
+            } catch (error) {
+                console.error('Erreur suppression:', error);
+                alert('Erreur lors de la suppression');
+            } finally {
+                addImageBtn.disabled = false;
+                loadingText.style.display = 'none';
+            }
+        }
+
+        // Gestionnaire du bouton
+        addImageBtn.addEventListener('click', () => {
+            if (userImage.style.display === 'none') {
+                // Ajouter une image
+                const input = document.createElement('input');
+                input.type = 'file';
+                input.accept = 'image/*';
+                input.onchange = async (e) => {
+                    const file = e.target.files[0];
+                    if (!file) return;
+                    
+                    // Vérifier la taille du fichier (max 5MB)
+                    if (file.size > 5 * 1024 * 1024) {
+                        alert('L\'image est trop grande (max 5MB)');
+                        return;
+                    }
+                    
+                    try {
+                        await uploadImage(file);
+                    } catch (error) {
+                        console.error('Erreur upload:', error);
+                    }
+                };
+                input.click();
+            } else {
+                // Supprimer l'image
+                if (confirm('Voulez-vous vraiment supprimer cette image ?')) {
+                    deleteCurrentImage();
+                }
+            }
+        });
+
+        // Initialiser
         updateSlideIndicator();
     </script>
-</body>
+  </body>
 </html>
